@@ -39,8 +39,8 @@ func SquareRoot(number float64) (float64, error) {
 	}
 
 	// Gunakan metode Newton untuk memperkir akan hasil akar kuadrat []
-	// Set nilai perkiraan awal sebagai nilai setengah dari angka
-	guess := number / 2.0
+	// Set nilai perkiraan awal
+	guess := 1.0
 
 	// Notasi epsilon merupakan representasi nilai kecil yang digunakan untuk membandingkan nilai float
 	// Di sini epsilon merepresentasikan 1 x 10^-15 atau 0.000000000000001
@@ -48,9 +48,18 @@ func SquareRoot(number float64) (float64, error) {
 	// sebagai jangkauan toleransi kesalahan
 	epsilon := 1e-15
 
+	// Batas maksimum iterasi
+	maxIterations := 1000
+
 	// Rumus: Iterasi Newton-Raphson
-	// loop cari nilai presisi dari akar kuadrat hingga mencapai batas toleransi
-	for math.Abs(guess*guess-number) > epsilon {
+	// loop cari nilai presisi dari akar kuadrat hingga mencapai batas toleransi atau maksimum iterasi
+	for i := 0; i < maxIterations; i++ {
+		// Periksa apakah sudah mencapai batas toleransi
+		if math.Abs(guess*guess-number) < epsilon {
+			break
+		}
+
+		// Update nilai perkiraan
 		guess = 0.5 * (guess + number/guess)
 	}
 

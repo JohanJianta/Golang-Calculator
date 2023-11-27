@@ -15,6 +15,9 @@ func WebServer() {
 	// Load HTML templates
 	r.LoadHTMLGlob("templates/*")
 
+	// Serve static files from the "static" directory
+	r.Static("/static", "./static/")
+
 	// Define routes
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
