@@ -1,3 +1,6 @@
+// File operations.go berisikan 4 function operasi matematika dasar
+// Pertambahan, pengurangan, perkalian, dan pembagian
+
 package mathops
 
 import "errors"
@@ -19,10 +22,9 @@ func Multiply(a, b float64) float64 {
 
 // Pembagian
 func Divide(a, b float64) (float64, error) {
+	// apabila mencoba membagi dengan 0
 	if b == 0 {
-		// apabila mencoba membagi dengan 0
-		err := errors.New("cannot divide by zero")
-		return 0, err
+		return 0, errors.New("cannot divide by zero")
 	}
 
 	return a / b, nil

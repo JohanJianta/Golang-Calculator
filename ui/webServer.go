@@ -1,7 +1,9 @@
+// File webServer.go berisikan server untuk menjalankan program kalkulator melalui peramban web
+// [Note] ini hanya testing semata :)
+
 package ui
 
 import (
-	"Golang-Calculator/calculator"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -33,17 +35,17 @@ func WebServer() {
 
 		switch operation {
 		case "addition":
-			result = calculator.Addition(num1, num2)
+			result, _ = calcFunc[0].Function(num1, num2)
 		case "subtraction":
-			result = calculator.Subtraction(num1, num2)
+			result, _ = calcFunc[1].Function(num1, num2)
 		case "multiplication":
-			result = calculator.Multiplication(num1, num2)
+			result, _ = calcFunc[2].Function(num1, num2)
 		case "division":
-			result, err = calculator.Division(num1, num2)
+			result, err = calcFunc[3].Function(num1, num2)
 		case "power":
-			result = calculator.Power(num1, num2)
+			result, _ = calcFunc[4].Function(num1, num2)
 		case "squareRoot":
-			result, err = calculator.SquareRoot(num1)
+			result, err = calcFunc[5].Function(num1, num2)
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid operation"})
 			return
@@ -62,7 +64,7 @@ func WebServer() {
 		})
 	})
 
-	// Run the server
+	// Jalankan server di localhost:8080
 	err := r.Run(":8080")
 	if err != nil {
 		fmt.Println("Error starting the server:", err)

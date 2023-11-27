@@ -1,3 +1,6 @@
+// File calculator.go berisikan function operasi kalkulator
+// Pertambahan, pengurangan, perkalian, pembagian, perpangkatan, dan akar kuadrat
+
 package calculator
 
 import (
@@ -6,19 +9,28 @@ import (
 	"math"
 )
 
+// Objek untuk representasi operasi kalkulator
+type CalculatorFunction struct {
+	Title    string
+	Function func(float64, float64) (float64, error)
+}
+
+// Function yang errornya langsung return nil dibuat demikian agar struktur function nya
+// sesuai dengan jenis yang ada di dalam struct CalculatorFunction
+
 // Pertambahan
-func Addition(a, b float64) float64 {
-	return roundIfDecimalIsZero(mathops.Add(a, b))
+func Addition(a, b float64) (float64, error) {
+	return mathops.Add(a, b), nil
 }
 
 // Pengurangan
-func Subtraction(a, b float64) float64 {
-	return roundIfDecimalIsZero(mathops.Subtract(a, b))
+func Subtraction(a, b float64) (float64, error) {
+	return mathops.Subtract(a, b), nil
 }
 
 // Perkalian
-func Multiplication(a, b float64) float64 {
-	return roundIfDecimalIsZero(mathops.Multiply(a, b))
+func Multiplication(a, b float64) (float64, error) {
+	return mathops.Multiply(a, b), nil
 }
 
 // Pembagian
@@ -27,55 +39,17 @@ func Division(a, b float64) (float64, error) {
 }
 
 // Perpangkatan
-func Power(base, exponent float64) float64 {
-	return roundIfDecimalIsZero(math.Pow(base, exponent))
+func Power(base, exponent float64) (float64, error) {
+	return math.Pow(base, exponent), nil
 }
 
 // Akar kuadrat
-func SquareRoot(number float64) (float64, error) {
+// _ sengaja ditambah agar memenuhi syarat dari function dalam CalculatorFunction
+func SquareRoot(number, _ float64) (float64, error) {
 	// Pastikan angka tidak negatif
 	if number < 0 {
 		return 0, errors.New("cannot calculate square root of a negative number")
 	}
 
-	// Gunakan metode Newton untuk memperkir akan hasil akar kuadrat []
-	// Set nilai perkiraan awal
-	guess := 1.0
-
-	// Notasi epsilon merupakan representasi nilai kecil yang digunakan untuk membandingkan nilai float
-	// Di sini epsilon merepresentasikan 1 x 10^-15 atau 0.000000000000001
-	// [Note] tidak semua nilai real bisa direpresentasikan oleh komputer, makanya dibutuhkan epsilon
-	// sebagai jangkauan toleransi kesalahan
-	epsilon := 1e-15
-
-	// Batas maksimum iterasi
-	maxIterations := 1000
-
-	// Rumus: Iterasi Newton-Raphson
-	// loop cari nilai presisi dari akar kuadrat hingga mencapai batas toleransi atau maksimum iterasi
-	for i := 0; i < maxIterations; i++ {
-		// Periksa apakah sudah mencapai batas toleransi
-		if math.Abs(guess*guess-number) < epsilon {
-			break
-		}
-
-		// Update nilai perkiraan
-		guess = 0.5 * (guess + number/guess)
-	}
-
-	return roundIfDecimalIsZero(guess), nil
-}
-
-func roundIfDecimalIsZero(f float64) float64 {
-	// Tetapkan jangkauan desimal yang akan dicek [1 x 10^-9]
-	epsilon := 1e-9
-
-	// Apabila sampai 9 angka desimal tidak ditemukan angka selain 0
-	// maka nilai float akan langsung dibulatkan tanpa desimal
-	if math.Mod(f, 1) < epsilon {
-		return math.Round(f)
-	}
-
-	// Jika terdapat angka selain 0, kembalikan utuh nilai float-nya
-	return f
+	return math.Sqrt(number), nil
 }

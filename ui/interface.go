@@ -10,76 +10,58 @@ import (
 	"strings"
 )
 
+// Array operasi kalkulator beserta namanya
+// Di buat demikin agar switch case bisa dipersingkat
+var calcFunc = []calculator.CalculatorFunction{
+	{Title: "Addition", Function: calculator.Addition},
+	{Title: "Subtraction", Function: calculator.Subtraction},
+	{Title: "Multiplication", Function: calculator.Multiplication},
+	{Title: "Division", Function: calculator.Division},
+	{Title: "Power", Function: calculator.Power},
+	{Title: "Square Root", Function: calculator.SquareRoot},
+}
+
 // Program kalkulator di terminal
 func CalcProgram() {
 	for {
+		// Tampilkan menu pilihan
 		operation, err := menu()
-		// Jika terjadi error, lanjut ke loop selanjutnya
+		// Jika terjadi error, skip switch dan lanjut ke loop selanjutnya
 		if checkError(err) {
 			continue
 		}
 
-		var result float64
+		fmt.Println("\n---")
 
 		switch operation {
-		case "1":
-			num1, num2, err := subMenu("Addition", true)
+		case "1", "2", "3", "4", "5", "6":
+			// Parse string ke integer
+			index, _ := strconv.ParseInt(operation, 10, 64)
+
+			// SubMenu untuk ambil inputan pertama dan kedua
+			num1, num2, err := subMenu(calcFunc[index-1].Title)
 			if checkError(err) {
-				continue
+				break
 			}
 
-			result = calculator.Addition(num1, num2)
-		case "2":
-			num1, num2, err := subMenu("Subtraction", true)
+			// Jalankan operasi kalkulator sesuai dengan operasi yang dipilih
+			result, err := calcFunc[index-1].Function(num1, num2)
 			if checkError(err) {
-				continue
+				break
 			}
 
-			result = calculator.Subtraction(num1, num2)
-		case "3":
-			num1, num2, err := subMenu("Multiplication", true)
-			if checkError(err) {
-				continue
-			}
-
-			result = calculator.Multiplication(num1, num2)
-		case "4":
-			num1, num2, err := subMenu("Division", true)
-			if checkError(err) {
-				continue
-			}
-
-			result, err = calculator.Division(num1, num2)
-			if checkError(err) {
-				continue
-			}
-		case "5":
-			num1, num2, err := subMenu("Power", true)
-			if checkError(err) {
-				continue
-			}
-
-			result = calculator.Power(num1, num2)
-		case "6":
-			// _ berarti variabel tidak akan digunakan
-			num1, _, err := subMenu("Square Root", false)
-			if checkError(err) {
-				continue
-			}
-
-			result, err = calculator.SquareRoot(num1)
-			if checkError(err) {
-				continue
-			}
+			// %.10f berarti tampilkan float sampai 10 desimal
+			fmt.Printf("\nResult: %.10f\n", result)
 		case "0":
+			// Hentikan program
 			fmt.Println("Goodbye")
 			return
 		default:
-			fmt.Println("Invalid operation")
-			continue
+			// Infokan apabila pilihan tidak tersedia
+			fmt.Println("Invalid Operation")
 		}
 
-		fmt.Printf("\nResult: %v\n", result)
+		fmt.Println("---")
 	}
 }
 
@@ -89,25 +71,22 @@ func menu() (string, error) {
 
 	fmt.Println("\n--- CALCULATOR ---")
 	fmt.Println("Choose Operation:")
-	fmt.Println("1. Addition")
-	fmt.Println("2. Subtraction")
-	fmt.Println("3. Multiplication")
-	fmt.Println("4. Division")
-	fmt.Println("5. Power")
-	fmt.Println("6. Square Root")
+	// Loop print seluruh operasi kalkulator yang tersedia
+	for index, value := range calcFunc {
+		// Contoh format "1. Addition"
+		fmt.Printf("%v. %v\n", (index + 1), value.Title)
+	}
 	fmt.Println("0. Exit")
 	operation, err := getInput("\n-> ", reader)
 	if err != nil {
 		return "", err
 	}
 
-	fmt.Println("\n---")
-
 	return operation, nil
 }
 
 // Menu operasi yang dipilih user
-func subMenu(title string, isDoubleInput bool) (float64, float64, error) {
+func subMenu(title string) (float64, float64, error) {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Printf("%v\n\n", title)
@@ -125,8 +104,8 @@ func subMenu(title string, isDoubleInput bool) (float64, float64, error) {
 		return 0, 0, err
 	}
 
-	// Tampilkan inputan kedua apabila bool true (false hanya untuk akar kuadrat)
-	if isDoubleInput {
+	// Hanya tampilkan inputan kedua apabila bukan akar kuadrat
+	if title != "Square Root" {
 		num2, err := getInput("Second number [exponent if Power]: ", reader)
 		if err != nil {
 			return 0, 0, err
@@ -135,7 +114,7 @@ func subMenu(title string, isDoubleInput bool) (float64, float64, error) {
 		// Coba parsing string inputan ke float
 		secondNum, err = strconv.ParseFloat(num2, 64)
 		if err != nil {
-			err = errors.New("input must be number")
+			err = errors.New("input must be a number")
 			return 0, 0, err
 		}
 	}
@@ -145,6 +124,7 @@ func subMenu(title string, isDoubleInput bool) (float64, float64, error) {
 }
 
 // Tampilkan pesan dan baca inputan user
+// Parameter reader pakai pointer (*) agar tidak perlu dibuat ulang variabelnya
 func getInput(prompt string, r *bufio.Reader) (string, error) {
 	fmt.Print(prompt)
 	input, err := r.ReadString('\n')
