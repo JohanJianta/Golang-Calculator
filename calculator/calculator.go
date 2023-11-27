@@ -38,7 +38,7 @@ func SquareRoot(number float64) (float64, error) {
 		return 0, errors.New("cannot calculate square root of a negative number")
 	}
 
-	// Gunakan metode Newton untuk memperkirakan hasil akar kuadrat []
+	// Gunakan metode Newton untuk memperkir akan hasil akar kuadrat []
 	// Set nilai perkiraan awal sebagai nilai setengah dari angka
 	guess := number / 2.0
 

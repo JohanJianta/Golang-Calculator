@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <form action="/calculate" method="post">
+        <label for="operation">Operation:</label>
+        <select name="operation" id="operation" onchange="updateNum2Visibility()">
+            <option value="addition">Addition</option>
+            <option value="subtraction">Subtraction</option>
+            <option value="multiplication">Multiplication</option>
+            <option value="division">Division</option>
+            <option value="power">Power</option>
+            <option value="squareRoot">Square Root</option>
+        </select>
+        <br>
+        <label for="num1">Number 1:</label>
+        <input type="number" name="num1" id="num1" required>
+        <br>
+        <label for="num2">Number 2:</label>
+        <input type="number" name="num2" id="num2">
+        <br>
+        <button type="submit">Calculate</button>
+    </form>
+  
+    <script>
+        function updateNum2Visibility() {
+            var operationSelect = document.getElementById("operation");
+            var num2Input = document.getElementById("num2");
+
+            // Check the selected operation
+            var selectedOperation = operationSelect.value;
+
+            // Disable "Number 2" input if the selected operation is "squareRoot"
+            num2Input.disabled = (selectedOperation === "squareRoot");
+        }
+
+        // Initial call to updateNum2Visibility
+        updateNum2Visibility()
+    </script>
+</body>
+</html>
