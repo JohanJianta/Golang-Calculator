@@ -18,6 +18,7 @@ func calcProgram() {
 		}
 
 		var result float64
+
 		switch operation {
 		case "1":
 			num1, num2, err := ui.SubMenu("Addition", true)
@@ -25,30 +26,21 @@ func calcProgram() {
 				continue
 			}
 
-			result, err = calculator.Addition(num1, num2)
-			if checkError(err) {
-				continue
-			}
+			result = calculator.Addition(num1, num2)
 		case "2":
 			num1, num2, err := ui.SubMenu("Subtraction", true)
 			if checkError(err) {
 				continue
 			}
 
-			result, err = calculator.Subtraction(num1, num2)
-			if checkError(err) {
-				continue
-			}
+			result = calculator.Subtraction(num1, num2)
 		case "3":
 			num1, num2, err := ui.SubMenu("Multiplication", true)
 			if checkError(err) {
 				continue
 			}
 
-			result, err = calculator.Multiplication(num1, num2)
-			if checkError(err) {
-				continue
-			}
+			result = calculator.Multiplication(num1, num2)
 		case "4":
 			num1, num2, err := ui.SubMenu("Division", true)
 			if checkError(err) {
@@ -65,11 +57,9 @@ func calcProgram() {
 				continue
 			}
 
-			result, err = calculator.Power(num1, num2)
-			if checkError(err) {
-				continue
-			}
+			result = calculator.Power(num1, num2)
 		case "6":
+			// _ berarti variabel tidak akan digunakan
 			num1, _, err := ui.SubMenu("Square Root", false)
 			if checkError(err) {
 				continue
@@ -92,6 +82,7 @@ func calcProgram() {
 }
 
 func checkError(err error) bool {
+	// Print pesan error apabila terjadi kesalahan
 	if err != nil {
 		fmt.Printf("\n[ERROR] %v\n", err)
 		return true

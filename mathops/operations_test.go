@@ -40,7 +40,6 @@ func TestMultiplication(t *testing.T) {
 
 // Tes pembagian
 func TestDivision(t *testing.T) {
-	// Test division with a valid case
 	result, err := Divide(10, 2)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
