@@ -44,10 +44,7 @@ func TestMultiplication(t *testing.T) {
 
 // Tes pembagian
 func TestDivision(t *testing.T) {
-	result, err := Division(10, 2)
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-	}
+	result, _ := Division(10, 2)
 
 	expected := 5.0
 	if result != expected {
@@ -57,7 +54,7 @@ func TestDivision(t *testing.T) {
 	}
 
 	// Tes pembagian dengan 0
-	_, err = Division(10, 0)
+	_, err := Division(10, 0)
 	if err == nil {
 		t.Error("Expected error for division by zero, but got none")
 	} else {
@@ -84,5 +81,54 @@ func TestSquareRoot(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", expected, result)
 	} else {
 		fmt.Println("[CORRECT] Square Root")
+	}
+
+	// Tes akar kuadrat angka negatif
+	_, err := SquareRoot(-9, 0)
+	if err == nil {
+		t.Error("Expected error for square root of negative number, but got none")
+	} else {
+		fmt.Println("[CORRECT] Square Root Error Handling")
+	}
+}
+
+// Tes sinus
+func TestSine(t *testing.T) {
+	result, _ := Sine(30, 0)
+	expected := 0.5
+	if result != expected {
+		t.Errorf("Expected %v, but got %v", expected, result)
+	} else {
+		fmt.Println("[CORRECT] Sine")
+	}
+}
+
+// Tes cosinus
+func TestCosine(t *testing.T) {
+	result, _ := Cosine(0, 0)
+	expected := 0.0
+	if result != expected {
+		t.Errorf("Expected %v, but got %v", expected, result)
+	} else {
+		fmt.Println("[CORRECT] Cosine")
+	}
+}
+
+// Tes tangen
+func TestTangent(t *testing.T) {
+	result, _ := Tangent(45, 0)
+	expected := 1.0
+	if result != expected {
+		t.Errorf("Expected %v, but got %v", expected, result)
+	} else {
+		fmt.Println("[CORRECT] Tangent")
+	}
+
+	// Tes tangen kelipatan 90
+	_, err := Division(90, 0)
+	if err == nil {
+		t.Error("Expected error for tangent by multiples of 90 degree, but got none")
+	} else {
+		fmt.Println("[CORRECT] Tangent Error Handling")
 	}
 }

@@ -53,3 +53,30 @@ func SquareRoot(number, _ float64) (float64, error) {
 
 	return math.Sqrt(number), nil
 }
+
+// Fungsi Trigonometri
+// Sinus
+func Sine(degree, _ float64) (float64, error) {
+	return math.Sin(degreesToRadians(degree)), nil
+}
+
+// Cosinus
+func Cosine(degree, _ float64) (float64, error) {
+	return math.Cos(degreesToRadians(degree)), nil
+}
+
+// Tangen
+func Tangent(degree, _ float64) (float64, error) {
+	// Pastikan derajat bukan kelipatan 90, karena bakal tidak terdefinisi
+	if math.Mod(degree, 90) == 0 {
+		err := errors.New("tangent is undefined for multiples of 90 degrees")
+		return 0, err
+	}
+
+	return math.Tan(degreesToRadians(degree)), nil
+}
+
+// Ubah derajat dalam bentuk radian, karena method trigonometri dari "math" menggunakan radian
+func degreesToRadians(degrees float64) float64 {
+	return degrees * math.Pi / 180
+}

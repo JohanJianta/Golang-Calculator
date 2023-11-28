@@ -19,6 +19,9 @@ var calcFunc = []calculator.CalculatorFunction{
 	{Title: "Division", Function: calculator.Division},
 	{Title: "Power", Function: calculator.Power},
 	{Title: "Square Root", Function: calculator.SquareRoot},
+	{Title: "Sine", Function: calculator.Sine},
+	{Title: "Cosine", Function: calculator.Cosine},
+	{Title: "Tangent", Function: calculator.Tangent},
 }
 
 // Program kalkulator di terminal
@@ -27,26 +30,26 @@ func CalcProgram() {
 		// Tampilkan menu pilihan
 		operation, err := menu()
 		// Jika terjadi error, skip switch dan lanjut ke loop selanjutnya
-		if checkError(err) {
+		if printError(err) {
 			continue
 		}
 
 		fmt.Println("\n---")
 
 		switch operation {
-		case "1", "2", "3", "4", "5", "6":
+		case "1", "2", "3", "4", "5", "6", "7", "8", "9":
 			// Parse string ke integer
 			index, _ := strconv.ParseInt(operation, 10, 64)
 
 			// SubMenu untuk ambil inputan pertama dan kedua
 			num1, num2, err := subMenu(calcFunc[index-1].Title)
-			if checkError(err) {
+			if printError(err) {
 				break
 			}
 
 			// Jalankan operasi kalkulator sesuai dengan operasi yang dipilih
 			result, err := calcFunc[index-1].Function(num1, num2)
-			if checkError(err) {
+			if printError(err) {
 				break
 			}
 
@@ -85,7 +88,7 @@ func menu() (string, error) {
 	return operation, nil
 }
 
-// Menu operasi yang dipilih user
+// SubMenu dari operasi yang dipilih user
 func subMenu(title string) (float64, float64, error) {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -105,7 +108,7 @@ func subMenu(title string) (float64, float64, error) {
 	}
 
 	// Hanya tampilkan inputan kedua apabila bukan akar kuadrat
-	if title != "Square Root" {
+	if title != "Square Root" && title != "Sine" && title != "Cosine" && title != "Tangent" {
 		num2, err := getInput("Second number [exponent if Power]: ", reader)
 		if err != nil {
 			return 0, 0, err
@@ -139,7 +142,7 @@ func getInput(prompt string, r *bufio.Reader) (string, error) {
 }
 
 // Print pesan error apabila terjadi kesalahan
-func checkError(err error) bool {
+func printError(err error) bool {
 	if err != nil {
 		fmt.Printf("\n[ERROR] %v\n", err)
 		return true
