@@ -69,8 +69,7 @@ func Cosine(degree, _ float64) (float64, error) {
 func Tangent(degree, _ float64) (float64, error) {
 	// Pastikan derajat bukan kelipatan 90, karena bakal tidak terdefinisi
 	if math.Mod(degree, 90) == 0 {
-		err := errors.New("tangent is undefined for multiples of 90 degrees")
-		return 0, err
+		return 0, errors.New("tangent is undefined for multiples of 90 degrees")
 	}
 
 	return math.Tan(degreesToRadians(degree)), nil

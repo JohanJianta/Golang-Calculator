@@ -11,7 +11,7 @@ import (
 )
 
 // Array operasi kalkulator beserta namanya
-// Di buat demikin agar switch case bisa dipersingkat
+// Di buat demikian agar switch case bisa dipersingkat
 var calcFunc = []calculator.CalculatorFunction{
 	{Title: "Addition", Function: calculator.Addition},
 	{Title: "Subtraction", Function: calculator.Subtraction},
@@ -103,8 +103,7 @@ func subMenu(title string) (float64, float64, error) {
 	// Coba parsing string inputan ke float
 	firstNum, err = strconv.ParseFloat(num1, 64)
 	if err != nil {
-		err = errors.New("input must be a number")
-		return 0, 0, err
+		return 0, 0, errors.New("input must be a number")
 	}
 
 	// Hanya tampilkan inputan kedua apabila bukan akar kuadrat
@@ -117,8 +116,7 @@ func subMenu(title string) (float64, float64, error) {
 		// Coba parsing string inputan ke float
 		secondNum, err = strconv.ParseFloat(num2, 64)
 		if err != nil {
-			err = errors.New("input must be a number")
-			return 0, 0, err
+			return 0, 0, errors.New("input must be a number")
 		}
 	}
 
@@ -133,8 +131,7 @@ func getInput(prompt string, r *bufio.Reader) (string, error) {
 	input, err := r.ReadString('\n')
 	// Apabila terjadi error ketika menginput (seperti ^C)
 	if err != nil {
-		err = errors.New("reading input interrupted")
-		return "", err
+		return "", errors.New("reading input interrupted")
 	}
 
 	// Hapus spasi di depan dan belakang inputan

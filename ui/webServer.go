@@ -46,6 +46,12 @@ func WebServer() {
 			result, _ = calcFunc[4].Function(num1, num2)
 		case "squareRoot":
 			result, err = calcFunc[5].Function(num1, num2)
+		case "sine":
+			result, err = calcFunc[6].Function(num1, num2)
+		case "cosine":
+			result, err = calcFunc[7].Function(num1, num2)
+		case "tangent":
+			result, err = calcFunc[8].Function(num1, num2)
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid operation"})
 			return
